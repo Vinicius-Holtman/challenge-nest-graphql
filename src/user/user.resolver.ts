@@ -11,13 +11,21 @@ export class UserResolver {
   async users(): Promise<User[]> {
     const users = await this.userService.findAllUsers();
     return users;
-  } 
+  }
+
+  @Query(() => User)
+  async user (
+    @Args('id') id: string
+  ): Promise<User> {
+    const user = this.userService.findUserById(id)
+    return user
+  }
 
   @Mutation(() => User)
   async createUser(
     @Args('data') data: CreateUserInput
   ): Promise<User> {
     const user = await this.userService.createUser(data)
-    return userdwqdwq
+    return user
   }
 }
