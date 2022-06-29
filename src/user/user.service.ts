@@ -29,7 +29,7 @@ export class UserService {
   }
 
   async createUser(data: CreateUserInput): Promise<User> {
-    const user = await this.userRepository.create(data);
+    const user = this.userRepository.create(data);
     const userSaved = await this.userRepository.save(user);
 
     if (!userSaved) {
@@ -37,5 +37,14 @@ export class UserService {
     }
 
     return userSaved;
+  }
+
+  async updateUser(id: string, data: CreateUserInput): Promise<User> {
+    const user = await this.findUserById(id);
+
+    await this.userRepository.update(user, { ...data });
+
+    const userUpdated = this.userRepository.create({ ...user, ...data });
+    return user
   }
 }
