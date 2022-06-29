@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateUserInput } from './dto/create-user-input';
+import { find } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -46,5 +47,13 @@ export class UserService {
 
     const userUpdated = this.userRepository.create({ ...user, ...data });
     return user
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    const user = await this.findUserById(id)
+
+    const deleted = await this.userRepository.delete(user)
+
+    deleted ? true : false;
   }
 }
